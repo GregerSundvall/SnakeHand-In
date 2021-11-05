@@ -23,7 +23,17 @@ public class LinkedList<T>
         public ListNode<T> next;
     }
 
+    public T GetFromIndex(int index)
+    {
+        current = head;
+        for (int i = 0; i < index; i++)
+        {
+            current = current.next;
+        }
+        return current.content;
+    }
     
+
     
     public void Add(T item)
     {
