@@ -19,7 +19,7 @@ public class LinkedList<T>
     public class ListNode<T>
     {
         public T content;
-        public ListNode<T> previous;
+        // public ListNode<T> previous;
         public ListNode<T> next;
     }
 

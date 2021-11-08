@@ -8,10 +8,11 @@ public class GameController : MonoBehaviour
     public float moveDelay = 0.2f;
     public GameObject snakePartPrefab;
     public GameObject applePrefab;
-    private Vector3 startPos = new Vector3(16  , 0, 16);
+    private Vector3 startPos = new Vector3(16  , 2, 16);
     public static bool grow = false;
     public int steps = 0;
     public static int applesPicked = 0;
+    private List<int> growPositions = new List<int>();
 
     private Vector3 north = new Vector3(0, 0, 1);
     private Vector3 south = new Vector3(0, 0, -1);
@@ -27,7 +28,11 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        snake.Add(Instantiate(snakePartPrefab, startPos, Quaternion.identity));
+        var newPart = Instantiate(snakePartPrefab, startPos, Quaternion.identity);
+        var script = newPart.GetComponent<SnakePartController>();
+        script.position = startPos;
+        script.previousPosition = startPos;
+        snake.Add(newPart);
         directions.Add(north);
         directions.Add(east);
         directions.Add(south);
@@ -84,25 +89,62 @@ public class GameController : MonoBehaviour
             SetDirection();
         }
         var head = snake.GetFromIndex(0);
-        var position = head.transform.position;
-        var posFromPrevious = position;
-        position += direction;
-        head.transform.position = position;
-        var delayBetweenParts = 0.03f;
+        var script = head.GetComponent<SnakePartController>();
+        var posFromPreviousPart = script.position;
+        script.previousPosition = script.position;
+        script.position += direction;
+
+        if (grow)
+        {
+            growPositions.Add(1);
+        }
+       
+        head.transform.localScale = new Vector3(1f,1f,1f);
+        
+        
+        // var position = head.transform.position;
+        // var posFromPreviousPart = position;
+        // position += direction;
+        // head.transform.position = position;
+        //var delayBetweenParts = 0.02f;
 
         for (int i = 1; i < snake.Count; i++)
         {
+            
             var snakePart = snake.GetFromIndex(i);
-            var tempPos = snakePart.transform.position;
-            StartCoroutine(MoveASnakePart(delayBetweenParts * i, snakePart, posFromPrevious));
-            posFromPrevious = tempPos;
+            script = snakePart.GetComponent<SnakePartController>();
+            script.previousPosition = script.position;
+            (script.position, posFromPreviousPart) = (posFromPreviousPart, script.position);
+            for (int j = 0; j < growPositions.Count; j++)
+            {
+                if (i == j +1)
+                {
+                    snakePart.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                }
+                else
+                {
+                    snakePart.transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+            }
+
+            // for (int index = 0; index < growPositions.Count; i++)
+            // {
+            //     growPositions[index] += 1;
+            // }
+            
+            //var tempPos = snakePart.transform.position;
+            //StartCoroutine(MoveASnakePart(delayBetweenParts * i, snakePart, posFromPreviousPart));
+            //posFromPreviousPart = tempPos;
             //(snakePart.transform.position, posFromPrevious) = (posFromPrevious, snakePart.transform.position);
 
         }
 
         if (grow)
         {
-            var newTail = Instantiate(snakePartPrefab, posFromPrevious, Quaternion.identity);
+            var newTail = Instantiate(snakePartPrefab, posFromPreviousPart, Quaternion.identity);
+            script = newTail.GetComponent<SnakePartController>();
+            script.position = posFromPreviousPart;
+            script.previousPosition = posFromPreviousPart;
             snake.Add(newTail);
             grow = false;
         }
@@ -114,12 +156,12 @@ public class GameController : MonoBehaviour
         }
     }
     
-    IEnumerator MoveASnakePart(float delay, GameObject part, Vector3 newPos)
-    {
-        yield return new WaitForSeconds(delay);
-
-        part.transform.position = newPos;
-    }
+    // IEnumerator MoveASnakePart(float delay, GameObject part, Vector3 newPos)
+    // {
+    //     yield return new WaitForSeconds(delay);
+    //
+    //     part.transform.position = newPos;
+    // }
 
     void SpawnApple()
     {

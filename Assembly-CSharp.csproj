@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\SampleSceneAssets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\SampleSceneAssets\Scripts\SimpleCameraController.cs" />
+     <Compile Include="Assets\Scripts\SnakePartController.cs" />
      <Compile Include="Assets\Scripts\Apple.cs" />
      <Compile Include="Assets\SampleSceneAssets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\SampleSceneAssets\Scripts\LookWithMouse.cs" />
