@@ -154,8 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDelay: 0.6
   snakePartPrefab: {fileID: 840229875094228470, guid: af75e9c667c0fb147aa45cf05e0bd735, type: 3}
+  applePrefab: {fileID: 840229875094228470, guid: 31117638988ed224faab2e13084d493f, type: 3}
   grow: 0
   steps: 0
+  applesPicked: 0
   direction: {x: 0, y: 0, z: 0}
 --- !u!4 &230776035
 Transform:
@@ -464,13 +466,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014288110}
-  m_LocalRotation: {x: 0.2510693, y: -0.508202, z: 0.15780093, w: 0.8085752}
+  m_LocalRotation: {x: 0.2677654, y: -0.41039428, z: 0.12743083, w: 0.86234546}
   m_LocalPosition: {x: 63, y: 29.5, z: 0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 653298672}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 34.5, y: -64.3, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.5, y: -50.9, z: 0}
 --- !u!114 &1014288112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,13 +1330,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572864458}
-  m_LocalRotation: {x: 0.49621648, y: 0, z: 0, w: 0.8681989}
-  m_LocalPosition: {x: 25, y: 37.2, z: -3.5}
+  m_LocalRotation: {x: 0.41786712, y: 0, z: 0, w: 0.9085082}
+  m_LocalPosition: {x: 16, y: 31.8, z: -13.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 59.5, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 49.4, y: 0, z: 0}
 --- !u!114 &1572864463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1652,8 +1654,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037471800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: -1, z: 25}
-  m_LocalScale: {x: 51, y: 5, z: 51}
+  m_LocalPosition: {x: 16, y: -1, z: 16}
+  m_LocalScale: {x: 31, y: 5, z: 31}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2

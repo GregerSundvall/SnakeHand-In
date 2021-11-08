@@ -15,6 +15,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.RotateAround(new Vector3(25, 0, 25), Vector3.up, 1 * Time.deltaTime);
+        transform.RotateAround(new Vector3(16, 0, 16), Vector3.up, 1 * Time.deltaTime);
     }
 }
