@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class SnakePartController : MonoBehaviour
@@ -8,15 +9,14 @@ public class SnakePartController : MonoBehaviour
     public Vector3 position;
     public Vector3 previousPosition;
     //public bool appleHit = false;
-    public Vector3 normalSize = new Vector3(0.1f, 0.1f, 0.1f);
-    public Vector3 bigSize = new Vector3(1.3f, 1.3f, 1.3f);
+    public Vector3 normalSize = new Vector3(1f, 1f, 1f);
+    public Vector3 bigSize = new Vector3(1.1f, 1.1f, 1.1f);
     public Vector3 minSize = new Vector3(0.1f, 0.1f, 0.1f);
-    
     public Vector3 currentSize;
     //public bool isTail = false;
     public GameObject collidingApple;
-
     public bool isColliding = false;
+
     
     void Start()
     {
@@ -26,10 +26,9 @@ public class SnakePartController : MonoBehaviour
     void Update()
     {
         transform.localScale = isColliding ? bigSize : normalSize;
-        transform.position = position;
-        //transform.position = Vector3.Lerp(previousPosition, position, 0.05f);
-        // var currentVelocity = Vector3.zero;
-        // transform.position = Vector3.SmoothDamp(previousPosition, position, ref currentVelocity, 0.2f);
+        transform.position = Vector3.MoveTowards(transform.position, position, 3 * Time.deltaTime);
+        //transform.position = position;
+        //transform.position = Vector3.Lerp(previousPosition, position, 1f);
     }
 
     // private void OnTriggerEnter(Collider other)

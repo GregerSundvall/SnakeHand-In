@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,14 +19,14 @@ public class SnakeController : MonoBehaviour
     private Vector3 east = new Vector3(1, 0, 0);
     List<Vector3> directions = new List<Vector3>();
     
-    public Vector3 direction;
+    public static Vector3 direction;
     private int directionInput = 0;
     private int previousDirectionInput = 0;
     private bool changeDirection = false;
     private GameObject nextToLastPart;
-    
-    
-    private void Start()
+
+
+    private void Awake()
     {
         // Create first snake part and add to snake.
         var newPart = Instantiate(snakePartPrefab, startPos, Quaternion.identity);
@@ -33,6 +34,11 @@ public class SnakeController : MonoBehaviour
         script.position = startPos;
         script.previousPosition = startPos;
         snake.Add(newPart);
+    }
+
+    private void Start()
+    {
+        
         
         // Add directions to list.
         directions.Add(north);
@@ -109,11 +115,15 @@ public class SnakeController : MonoBehaviour
             script.previousPosition = script.position;
             if (i == 0)
             {
+                // If current part is the head, get new position from direction.
+                script.previousPosition = script.position;
                 posFromPreviousPart = script.position;
                 script.position += direction;
             }
             else
             {
+                // If current part is not the head, get new position from previous parts old position.
+                script.previousPosition = script.position;
                 (script.position, posFromPreviousPart) = (posFromPreviousPart, script.position);
                 nextToLastPart = snakePart;
             }
