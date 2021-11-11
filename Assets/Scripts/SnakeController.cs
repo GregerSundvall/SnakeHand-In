@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class SnakeController : MonoBehaviour
 {
     public static LinkedList<GameObject> snake = new LinkedList<GameObject>();
     public static float moveDelay = 0.6f;
+    public static float moveTowardsMaxDelta = 3;
     public GameObject snakePartPrefab;
     private Vector3 startPos = GameController.startPos;
     public int movesDone = 0;  
@@ -31,6 +33,7 @@ public class SnakeController : MonoBehaviour
     {
         // Create first snake part and add to snake.
         var newPart = Instantiate(snakePartPrefab, startPos, Quaternion.identity);
+        newPart.GetComponent<SphereCollider>().isTrigger = true;
         var script = newPart.GetComponent<SnakePartController>();
         script.position = startPos;
         script.previousPosition = startPos;
@@ -56,7 +59,25 @@ public class SnakeController : MonoBehaviour
     private void Update()
     {
         GetInput();
-        if (GameController.gameOver) { StopAllCoroutines(); }
+        if (GameController.gameOver)
+        {
+            StopAllCoroutines();
+            Explode();
+        }
+        
+    }
+
+    private void Explode()
+    {
+        for (int i = 0; i < snake.Count; i++)
+        {
+            var snakePart = snake.GetFromIndex(i);
+            //snakePart.GetComponent<Rigidbody>().AddForce(50, 50, 50, ForceMode.Impulse);
+            snakePart.GetComponent<Rigidbody>().AddExplosionForce(100,
+                snake.Head().transform.position, 
+                30, 
+                10);
+        }
     }
     
     
@@ -157,6 +178,7 @@ public class SnakeController : MonoBehaviour
             if(moveDelay > 0.1f)
             {
                 moveDelay *= 0.999f;
+                moveTowardsMaxDelta *= 0.999f;
             }
             yield return new WaitForSeconds(delay);
         }

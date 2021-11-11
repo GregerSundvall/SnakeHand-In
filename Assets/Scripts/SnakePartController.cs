@@ -26,7 +26,9 @@ public class SnakePartController : MonoBehaviour
     void Update()
     {
         transform.localScale = isColliding ? bigSize : normalSize;
-        transform.position = Vector3.MoveTowards(transform.position, position, 3 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, 
+            position, 
+            SnakeController.moveTowardsMaxDelta * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
