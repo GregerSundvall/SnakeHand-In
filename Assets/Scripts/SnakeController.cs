@@ -6,10 +6,9 @@ using UnityEngine;
 public class SnakeController : MonoBehaviour
 {
     public static LinkedList<GameObject> snake = new LinkedList<GameObject>();
-    private float moveDelay = 0.6f;
+    public static float moveDelay = 0.6f;
     public GameObject snakePartPrefab;
     private Vector3 startPos = GameController.startPos;
-    //public static bool grow = false;
     public int movesDone = 0;  
     public static int applesPicked = 0;
 
@@ -22,8 +21,10 @@ public class SnakeController : MonoBehaviour
     public static Vector3 direction;
     private int directionInput = 0;
     private int previousDirectionInput = 0;
-    private bool changeDirection = false;
+    private bool changeInDirection = false;
     private GameObject nextToLastPart;
+    private bool addSnakePart = false;
+    private Vector3 posFromPreviousPart = Vector3.zero; // Temp position, to be passed on as next part's target pos.
 
 
     private void Awake()
@@ -55,6 +56,7 @@ public class SnakeController : MonoBehaviour
     private void Update()
     {
         GetInput();
+        if (GameController.gameOver) { StopAllCoroutines(); }
     }
     
     
@@ -65,15 +67,15 @@ public class SnakeController : MonoBehaviour
         if (Input.GetKeyDown("w"))
         {
             directionInput = 0;
-            changeDirection = true;
+            changeInDirection = true;
         } else if (Input.GetKeyDown("a"))
         {
             directionInput = -1;
-            changeDirection = true;
+            changeInDirection = true;
         } else if (Input.GetKeyDown("d"))
         {
             directionInput = 1;
-            changeDirection = true;
+            changeInDirection = true;
         }
     }
 
@@ -92,21 +94,25 @@ public class SnakeController : MonoBehaviour
         
         previousDirectionInput = newDirection;
         direction = directions[newDirection];
-        changeDirection = false;
+        changeInDirection = false;
     }
 
     private void Move()
     {
-        if (changeDirection)
+        if (addSnakePart)
+        {
+            var newTail = Instantiate(snakePartPrefab, posFromPreviousPart, Quaternion.identity);
+            var newTailScript = newTail.GetComponent<SnakePartController>();
+            newTailScript.position = posFromPreviousPart;
+            newTailScript.previousPosition = posFromPreviousPart;
+            snake.Add(newTail);
+            addSnakePart = false;
+        }
+        
+        if (changeInDirection)
         {
             SetDirection();
         }
-
-        // var head = snake.GetFromIndex(0);
-        //var script = new SnakePartController();
-        var posFromPreviousPart = Vector3.zero; // Temp position, to be passed on as next part's target pos.
-        // script.previousPosition = script.position;
-        // script.position += direction;
 
         for (var i = 0; i < snake.Count; i++)
         {
@@ -128,35 +134,32 @@ public class SnakeController : MonoBehaviour
                 nextToLastPart = snakePart;
             }
 
+            if (i == snake.Count - 1)
+            {
+                snakePart.GetComponent<SphereCollider>().isTrigger = true;
+            }
 
             if (i == snake.Count - 1 && script.isColliding)
             {
                 script.isColliding = false;
                 Destroy(script.collidingApple);
-                var newTail = Instantiate(snakePartPrefab, posFromPreviousPart, Quaternion.identity);
-                script = newTail.GetComponent<SnakePartController>();
-                script.position = posFromPreviousPart;
-                script.previousPosition = posFromPreviousPart;
-                snake.Add(newTail);
+                addSnakePart = true;
             }
         }
-
         movesDone++;
     }
 
     private IEnumerator MakeAMove(float delay)
     {
-        yield return new WaitForSeconds(delay);
-            
-        Move();
-
-        if(moveDelay > 0.1f)
+        while (true)
         {
-            moveDelay -= 0.001f;
+            Move();
+            if(moveDelay > 0.1f)
+            {
+                moveDelay *= 0.999f;
+            }
+            yield return new WaitForSeconds(delay);
         }
-        
-
-        StartCoroutine(MakeAMove(moveDelay));
     }
 
 

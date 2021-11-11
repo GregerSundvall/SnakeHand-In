@@ -11,10 +11,16 @@ public class GameController : MonoBehaviour
     private LinkedList<GameObject> snake = SnakeController.snake;
     public static Vector3 startPos = new Vector3(16  , 2, 16);
     public float spawnDelay = 3f;
+    public static bool gameOver = false;
 
     private void Start()
     {
         StartCoroutine(AppleSpawner(spawnDelay));
+    }
+
+    private void Update()
+    {
+        if (gameOver) { StopAllCoroutines(); }
     }
 
     void SpawnApple()
@@ -36,16 +42,13 @@ public class GameController : MonoBehaviour
         Instantiate(applePrefab, pos, Quaternion.identity);
     }
 
-    private IEnumerator AppleSpawner(float delay)
+    private IEnumerator AppleSpawner(float spawnDelay)
     {
-        yield return new WaitForSeconds(delay);
-        SpawnApple();
-        // if(spawnDelay > 0.1f)
-        // {
-        //     spawnDelay -= 0.001f;
-        // }
-        
-        StartCoroutine(AppleSpawner(spawnDelay));
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnDelay);
+            SpawnApple();
+        }
     }
     
     
