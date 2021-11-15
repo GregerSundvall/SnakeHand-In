@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     
     public GameObject applePrefab;
     private LinkedList<GameObject> snake = SnakeController.snake;
-    public static Vector3 startPos = new Vector3(16  , 2, 16);
+    public static Vector3 startPos = new Vector3(16  , 3, 16);
     public float spawnDelay = 3f;
     public static bool gameOver = false;
 

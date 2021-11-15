@@ -33,7 +33,7 @@ public class SnakeController : MonoBehaviour
     {
         // Create first snake part and add to snake.
         var newPart = Instantiate(snakePartPrefab, startPos, Quaternion.identity);
-        newPart.GetComponent<SphereCollider>().isTrigger = true;
+        newPart.GetComponent<SphereCollider>().isTrigger = false;
         var script = newPart.GetComponent<SnakePartController>();
         script.position = startPos;
         script.previousPosition = startPos;
@@ -157,7 +157,7 @@ public class SnakeController : MonoBehaviour
 
             if (i == snake.Count - 1)
             {
-                snakePart.GetComponent<SphereCollider>().isTrigger = true;
+                snakePart.GetComponent<SphereCollider>().isTrigger = false;
             }
 
             if (i == snake.Count - 1 && script.isColliding)

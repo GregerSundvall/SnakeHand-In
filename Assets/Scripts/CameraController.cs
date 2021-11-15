@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, camPos, 4f * Time.deltaTime);
         //transform.localPosition = snakeHeadPos + SnakeController.direction * -5;
         //var camTarget = transform.TransformPoint(new Vector3(0, 0, 0));
-        transform.LookAt(Vector3.Lerp(snakeHeadPreviousPos, snakeHeadPos, 5f * Time.deltaTime));
+        transform.LookAt(Vector3.Lerp(snakeHeadPreviousPos, snakeHeadPos, 4f * Time.deltaTime));
         
         //transform.LookAt(transform.localPosition + new Vector3(0, -20, 30));
     }
