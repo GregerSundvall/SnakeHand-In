@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     
     public GameObject applePrefab;
     private LinkedList<GameObject> snake = SnakeController.snake;
-    public static Vector3 startPos = new Vector3(16  , 3, 16);
+    public static Vector3 startPos = new Vector3(16  , 0, 16);
     public float spawnDelay = 3f;
     public static bool gameOver = false;
 
@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour
         while (crash)
         {
             crash = false;
-            pos = new Vector3(Random.Range(1, 31), 2, Random.Range(1, 31));
+            pos = new Vector3(Random.Range(1, 31), 0, Random.Range(1, 31));
             for (int i = 0; i < snake.Count; i++)
             {
                 if (pos == snake.GetFromIndex(i).transform.position)
